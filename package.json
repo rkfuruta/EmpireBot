@@ -1,0 +1,23 @@
+{
+  "name": "empirebot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rkfuruta/EmpireBot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rkfuruta/EmpireBot/issues"
+  },
+  "homepage": "https://github.com/rkfuruta/EmpireBot#readme",
+  "dependencies": {
+    "axios": "^1.2.2",
+    "socket.io-client": "^4.5.4"
+  }
+}

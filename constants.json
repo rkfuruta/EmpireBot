@@ -1,0 +1,6 @@
+{
+    "empire": {
+        "domain": "csgoempire.com",
+        "socketEndpoint": "wss://trade.csgoempire.com/trade"
+    }
+}

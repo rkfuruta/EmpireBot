@@ -1,0 +1,23 @@
+{
+    "debug": true,
+    "empire": {
+        "api_key": "",
+        "coin_value": 0.61403
+    },
+    "waxpeer": {
+        "apiKey": "",
+        "cacheList": 15
+    },
+    "bid": {
+        "discount": 5,
+        "buy_commodity": false,
+        "buy_no_paint_items": false,
+        "buy_knife_glove": false,
+        "buy_stattrack": false,
+        "wear_threshold": 80,
+        "filter_by_wear": [
+            "Battle-Scarred",
+            "Field-Tested"
+        ]
+    }
+}

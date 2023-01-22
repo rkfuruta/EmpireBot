@@ -2,9 +2,10 @@ const _ = require("underscore");
 const wear = require("../Item/Wear.js");
 const config = require("../config.json");
 const Message = require("../Model/Message.js");
+const Price = require("../Model/Price.js");
 
 module.exports = {
-    execute: (item) => {
+    execute: async (item) => {
         if (!item.hasGoodFloat()) {
             Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error");
             return false;
@@ -27,6 +28,10 @@ module.exports = {
         }
         if (!config.bid.buy_knife_glove && item.isKnifeorGlove()) {
             Message.debug(`${item.name} removed: Knife or Glove`, "error");
+            return false;
+        }
+        if (!(await Price.hasGoodPrice(item))) {
+            Message.debug(`${item.name} removed: Bad Price`, "error");
             return false;
         }
         module.exports.place(item);

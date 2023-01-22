@@ -9,6 +9,8 @@
         "cacheList": 15
     },
     "bid": {
+        "min_value": 50,
+        "max_value": 200,
         "discount": 5,
         "buy_commodity": false,
         "buy_no_paint_items": false,

@@ -7,6 +7,14 @@ const price = new Price();
 
 module.exports = {
     execute: async (item) => {
+        if (config.bid.min_value > item.price) {
+            Message.debug(`${item.name} removed: Min value: ${config.bid.min_value} Item price:${item.price}`, "error");
+            return false;
+        }
+        if (config.bid.max_value < item.price) {
+            Message.debug(`${item.name} removed: Max value: ${config.bid.max_value} Item price:${item.price}`, "error");
+            return false;
+        }
         if (module.exports.isExcludedWear(item)) {
             Message.debug(`${item.name} removed: Wear type`, "error");
             return false;

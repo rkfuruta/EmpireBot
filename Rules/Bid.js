@@ -3,13 +3,10 @@ const wear = require("../Item/Wear.js");
 const config = require("../config.json");
 const Message = require("../Model/Message.js");
 const Price = require("../Model/Price.js");
+const price = new Price();
 
 module.exports = {
     execute: async (item) => {
-        if (!item.hasGoodFloat()) {
-            Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error");
-            return false;
-        }
         if (module.exports.isExcludedWear(item)) {
             Message.debug(`${item.name} removed: Wear type`, "error");
             return false;
@@ -30,10 +27,14 @@ module.exports = {
             Message.debug(`${item.name} removed: Knife or Glove`, "error");
             return false;
         }
-        if (!(await Price.hasGoodPrice(item))) {
+        if (!(await price.hasGoodPrice(item))) {
             Message.debug(`${item.name} removed: Bad Price`, "error");
             return false;
         }
+        // if (!item.hasGoodFloat()) {
+        //     Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error");
+        //     return false;
+        // }
         module.exports.place(item);
     },
 

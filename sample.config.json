@@ -6,7 +6,8 @@
     },
     "waxpeer": {
         "apiKey": "",
-        "cacheList": 15
+        "cacheList": 15,
+        "buyOrderCheckPercentage": 10
     },
     "bid": {
         "enabled": false,

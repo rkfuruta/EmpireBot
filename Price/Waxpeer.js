@@ -41,8 +41,8 @@ module.exports = class Waxpeer {
             let second = parseInt(secondOrder.price);
             let percentage = 100-((second*100)/best);
             Message.debug(`Checking buy order price: highest: ${best} second: ${second} percentage: ${percentage}%`, "blue");
-            if (percentage > 5) {
-                Message.debug("Price from highest buy order has more than 5% diff from second", "error");
+            if (percentage > config.waxpeer.buyOrderCheckPercentage) {
+                Message.debug("Price from highest buy order has more than ${config.waxpeer.buyOrderCheckPercentage}% diff from second", "error");
                 return null;
             }
         }

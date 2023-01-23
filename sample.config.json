@@ -22,5 +22,8 @@
             "Battle-Scarred",
             "Field-Tested"
         ]
+    },
+    "print": {
+        "bad_items": false
     }
 }

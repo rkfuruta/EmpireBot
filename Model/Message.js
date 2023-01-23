@@ -3,7 +3,10 @@ const colors = require("colors");
 const _ = require("underscore");
 
 module.exports = {
-    print: (message, type) => {
+    print: (message, type, identifier = null) => {
+        if (identifier && config.print.hasOwnProperty(identifier) && !config.print[identifier]) {
+            return false;
+        }
         if (!_.isObject(message)) {
             switch (type) {
                 case "exeption":
@@ -26,9 +29,9 @@ module.exports = {
         console.log(message);
     },
 
-    debug: (message, type) => {
+    debug: (message, type, identifier = null) => {
         if (config.debug) {
-            module.exports.print(message, type);
+            module.exports.print(message, type, identifier);
         }
     }
 }

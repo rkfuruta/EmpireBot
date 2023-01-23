@@ -1,6 +1,7 @@
 {
     "empire": {
         "domain": "csgoempire.com",
-        "socketEndpoint": "wss://trade.csgoempire.com/trade"
+        "socketEndpoint": "wss://trade.csgoempire.com/trade",
+        "endpoint": "https://csgoempire.com/api/v2/"
     }
 }

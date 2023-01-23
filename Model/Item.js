@@ -4,6 +4,7 @@ const config = require("../config.json");
 module.exports = class Item {
     constructor(item) {
         this.raw = item;
+        this.depositId = item.id;
         this.wear = item.wear;
         this.wear_name = wear.getWear(this.wear);
         this.name = item.market_name;

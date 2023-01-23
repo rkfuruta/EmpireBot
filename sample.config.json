@@ -9,6 +9,7 @@
         "cacheList": 15
     },
     "bid": {
+        "enabled": false,
         "min_value": 50,
         "max_value": 200,
         "discount": 5,

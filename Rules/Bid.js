@@ -71,8 +71,9 @@ module.exports = {
             let request = await axios.post(url, {bid_value: item.bid_value}).catch((err) => {
                 if (err.hasOwnProperty("response") && err.response.hasOwnProperty("data") && err.response.data.hasOwnProperty("message")) {
                     Message.print(err.response.data.message, "error")
+                } else {
+                    Message.debug(err, "exeption");
                 }
-                Message.debug(err, "exeption");
             });
             return item;
         }

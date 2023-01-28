@@ -15,19 +15,22 @@ let bidItems = {};
 
 module.exports = {
     new_item: (data) => {
-        _.each(data, (item) => {
+        _.each(data, async (item) => {
             let item_model = new Item(item);
-            let result = Bid.execute(item_model);
+            let result = await Bid.execute(item_model);
             if (result) {
-                bidItems[item.depositId] = item;
+                bidItems[item_model.depositId] = item_model;
             }
         });
     },
 
     auction_update: (data, userData) => {
-        _.each(data, (update) => {
+        _.each(data, async(update) => {
             let auction = new Auction();
-            bidItems = auction.update(userData, update, bidItems);
+            let result = await auction.update(userData, update, bidItems);
+            if (result && bidItems.hasOwnProperty(result)) {
+                delete bidItems[result];
+            }
         });
     }
 }

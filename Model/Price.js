@@ -11,7 +11,7 @@ module.exports = class Price {
     }
     async hasGoodPrice(item) {
         let price = await this.getPrice(item);
-        Message.debug(`Item price: ${item.price} Buy order: ${price}` , "blue");
+        Message.debug(`Item ${item.name} price: ${item.price} Buy order: ${price}` , "blue");
         if (!price) {
             return false;
         }

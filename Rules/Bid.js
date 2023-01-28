@@ -47,7 +47,7 @@ module.exports = {
             Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error", "bad_item");
             return false;
         }
-        module.exports.place(item);
+        return await module.exports.place(item);
     },
 
     isExcludedWear: (item) => {
@@ -62,18 +62,20 @@ module.exports = {
     },
 
     place: async (item) => {
-        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormatedPrice()}`, "success");
+        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormatedPrice()}\n\tBid Value: ${item.bid_value}`, "success");
         let url = `${constants.empire.endpoint}trading/deposit/${item.depositId}/bid`;
         Message.debug(url, "blue");
-        Message.print(`Item: ${item.name} Url: ${url} Bid value: ${item.raw_value}`, "warning");
+        Message.print(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");
         if (config.bid.enabled) {
             Message.print("Placing bid", "warning");
-            let request = await axios.post(url, {bid_value: item.raw_value}).catch((err) => {
-                if (err.hasOwnProperty("data") && err.data.hasOwnProperty("message")) {
-                    Message.print(err.data.message, "error")
+            let request = await axios.post(url, {bid_value: item.bid_value}).catch((err) => {
+                if (err.hasOwnProperty("response") && err.response.hasOwnProperty("data") && err.response.data.hasOwnProperty("message")) {
+                    Message.print(err.response.data.message, "error")
                 }
                 Message.debug(err, "exeption");
             });
+            return item;
         }
+        return null;
     }
 }

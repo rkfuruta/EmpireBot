@@ -1,0 +1,25 @@
+const Message = require("../Model/Message.js");
+const Price = require("../Model/Price.js");
+const Bid = require("../Rules/Bid.js");
+const price = new Price();
+
+module.exports = class AuctionUpdate {
+    async update(userData, update, bidItems) {
+        if (userData.user.id === update.auction_highest_bidder) {
+            return null;
+        }
+        if (!bidItems.hasOwnProperty(update.id)) {
+            return null;
+        }
+        let item = bidItems[update.id];
+        Message.debug(`Checking update on auction ${item.name}`, "blue");
+        item.bid_value = price.getNextBidValue(update.auction_highest_bid);
+        if (price.checkAuctionUpdatePrice()) {
+            Message.debug(`Placing new bid on item ${item.name}\n\tcoins: ${item.value}\n\tbid value: ${item.bid_value}\n\tbuy order from: ${item.item.buy_order.from}\n\tbuy order: ${item.item.buy_order.price}`, "warning")
+            await Bid.place(item);
+        } else {
+            delete bidItems[update.id];
+        }
+        return bidItems;
+    }
+}

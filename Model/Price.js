@@ -27,8 +27,34 @@ module.exports = class Price {
         return true;
     }
 
+    checkAuctionUpdatePrice(item) {
+        if (!item.buy_order || !item.buy_order.price) {
+            return false;
+        }
+        if (item.buy_order.price < item.bid_value) {
+            return false;
+        }
+        let percentage = 100-((item.price*100)/item.bid_value);
+        Message.debug(`Discounted ${percentage}% - Item(${item.price}) - Buy Order(${item.buy_order.price}) - Bid Value (${item.bid_value})` , "warning");
+        if (percentage < config.bid.discount) {
+            Message.debug(`Bad price - Discount(${percentage}) - Config(${config.bid.discount})` , "blue");
+            return false;
+        }
+        return true;
+    }
+
+    getNextBidValue(price)
+    {
+        let amount = price/100;
+        return price + amount;
+    }
+
     async getPrice(item) {
         let price = await this.waxpeer.getPrice(item);
+        item.buy_order = {
+            "price" : price,
+            "from": "waxpeer"
+        };
         // if (!price) {
         //     Message.debug(`Item price from steam: ${price}`, "blue");
         //     price = await this.steam.getPrice(item);

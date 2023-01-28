@@ -9,6 +9,7 @@ module.exports = class Item {
         this.wear_name = wear.getWear(this.wear);
         this.name = item.market_name;
         this.raw_value = item.market_value;
+        this.bid_value = item.market_value;
         this.value = this.getValue();
         this.price = this.getPrice();
         this.is_commodity = item.is_commodity;

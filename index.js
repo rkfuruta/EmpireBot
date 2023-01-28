@@ -38,7 +38,7 @@ async function initSocket() {
 
             socket.on('init', (data) => {
                 if (data && data.authenticated) {
-                    console.log(`Successfully authenticated as ${data.name}`);
+                    console.log(`Successfully authenticated as ${data.name} id: ${data.id}`);
                     socket.emit('filters', {
                         price_max: 9999999
                     });
@@ -53,7 +53,17 @@ async function initSocket() {
             })
 
             _.each(Object.keys(Actions), (key) => {
-                socket.on(key, (data) => {Actions[key](data)});
+                socket.on(key, (data) => {
+                    switch (key) {
+                        case "auction_update":
+                            Actions[key](data, userData)
+                            break;
+                        default:
+                            Actions[key](data);
+                            break;
+                    }
+
+                });
             });
 
             socket.on("disconnect", (reason) => console.log(`Socket disconnected: ${reason}`));

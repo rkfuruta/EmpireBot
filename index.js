@@ -12,6 +12,7 @@ async function initSocket() {
     console.log("Connecting to websocket...");
 
     try {
+        let wasConnected = false;
         const userData = (await axios.get(`https://${constants.empire.domain}/api/v2/metadata/socket`)).data;
 
         const socket = io(
@@ -28,6 +29,12 @@ async function initSocket() {
 
         socket.on('connect', async () => {
             console.log(`Connected to websocket`);
+            if (wasConnected) {
+                console.log("Closing script");
+                process.exit()
+            } else {
+                wasConnected = true;
+            }
 
             socket.on('init', (data) => {
                 if (data && data.authenticated) {

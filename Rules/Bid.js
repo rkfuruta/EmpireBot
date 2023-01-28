@@ -43,10 +43,10 @@ module.exports = {
             Message.debug(`${item.name} removed: Bad Price`, "error", "bad_item");
             return false;
         }
-        // if (!item.hasGoodFloat()) {
-        //     Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error", "bad_item");
-        //     return false;
-        // }
+        if (config.bid.validate_float && !item.hasGoodFloat()) {
+            Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error", "bad_item");
+            return false;
+        }
         module.exports.place(item);
     },
 

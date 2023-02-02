@@ -18,6 +18,7 @@
         "buy_no_paint_items": false,
         "buy_knife_glove": false,
         "buy_stattrack": false,
+        "check_blacklist": true,
         "validate_float": false,
         "wear_threshold": 80,
         "filter_by_wear": [

@@ -1,5 +1,7 @@
 const wear = require("../Item/Wear.js");
 const config = require("../config.json");
+const blacklist = require("../blacklist.json");
+const _ = require("underscore");
 
 module.exports = class Item {
     constructor(item) {
@@ -49,5 +51,15 @@ module.exports = class Item {
 
     getFormatedPrice() {
         return "$" + this.getPrice().toFixed(2);
+    }
+
+    isOnBlackList() {
+        if (blacklist.hasOwnProperty("market_name") && _.isArray(blacklist.market_name)) {
+            let blacklisted = _.find(blacklist.market_name, (name) => {
+                return this.name.indexOf(name) !== -1;
+            });
+            return (blacklisted !== undefined)
+        }
+        return false;
     }
 }

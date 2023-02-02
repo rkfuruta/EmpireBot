@@ -11,6 +11,10 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${config.empire.api_key
 
 module.exports = {
     execute: async (item) => {
+        if (config.bid.check_blacklist && item.isOnBlackList()) {
+            Message.debug(`${item.name} removed: Blacklist`, "warning", "bad_item");
+            return false;
+        }
         if (config.bid.min_value > item.price) {
             Message.debug(`${item.name} removed: Min value: ${config.bid.min_value} Item price:${item.price}`, "error", "bad_item");
             return false;
@@ -47,6 +51,7 @@ module.exports = {
             Message.debug(`${item.name} removed: Bad float ${item.wear}`, "error", "bad_item");
             return false;
         }
+
         return await module.exports.place(item);
     },
 

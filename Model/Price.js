@@ -32,8 +32,8 @@ module.exports = class Price {
             Message.debug("Missing item buy order");
             return false;
         }
-        if (item.buy_order.price < item.bid_value) {
-            Message.debug(`Auction item ${item.name} bid value (${item.bid_value}) higher than buy order (${item.buy_order.price})`)
+        if (item.buy_order.price < item.getBidPrice()) {
+            Message.debug(`Auction item ${item.name} bid value (${item.bid_value}) bid price (${item.getBidPrice()}) higher than buy order (${item.buy_order.price})`)
             return false;
         }
         let percentage = 100-((item.price*100)/item.bid_value);

@@ -74,6 +74,7 @@ module.exports = {
                 } else {
                     Message.debug(err, "exeption");
                 }
+                return null;
             });
             return item;
         }

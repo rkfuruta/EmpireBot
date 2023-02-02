@@ -17,7 +17,10 @@ module.exports = class AuctionUpdate {
         item.bid_value = newBidValue;
         if (price.checkAuctionUpdatePrice(item)) {
             Message.debug(`Placing new bid on item ${item.name}\n\tcoins: ${item.value}\n\tbid value: ${item.bid_value}\n\tbuy order from: ${item.item.buy_order.from}\n\tbuy order: ${item.item.buy_order.price}`, "warning")
-            await Bid.place(item);
+            let response = await Bid.place(item);
+            if (response) {
+                return update.id;
+            }
         } else {
             return update.id;
         }

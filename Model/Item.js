@@ -39,6 +39,14 @@ module.exports = class Item {
         return this.getValue() * config.empire.coin_value;
     }
 
+    getBidValue() {
+        return this.bid_value/100;
+    }
+
+    getBidPrice() {
+        return this.getBidValue() * config.empire.coin_value;
+    }
+
     getFormatedPrice() {
         return "$" + this.getPrice().toFixed(2);
     }

@@ -49,7 +49,7 @@ module.exports = class Item {
         return this.getBidValue() * config.empire.coin_value;
     }
 
-    getFormatedPrice() {
+    getFormattedPrice() {
         return "$" + this.getPrice().toFixed(2);
     }
 

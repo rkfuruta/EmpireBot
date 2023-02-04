@@ -67,7 +67,7 @@ module.exports = {
     },
 
     place: async (item) => {
-        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormatedPrice()}\n\tBid Value: ${item.bid_value}`, "success");
+        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormattedPrice()}\n\tBid Value: ${item.bid_value}\n\tBid Price: ${item.getBidPrice()}`, "success");
         let url = `${constants.empire.endpoint}trading/deposit/${item.depositId}/bid`;
         Message.debug(url, "blue");
         Message.print(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");

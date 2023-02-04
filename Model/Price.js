@@ -36,7 +36,7 @@ module.exports = class Price {
             Message.debug(`Auction item ${item.name} bid value (${item.bid_value}) bid price (${item.getBidPrice()}) higher than buy order (${item.buy_order.price})`)
             return false;
         }
-        let percentage = 100-((item.price*100)/item.bid_value);
+        let percentage = 100-((item.price*100)/item.getBidPrice());
         Message.debug(`Discounted ${percentage}% - Item(${item.price}) - Buy Order(${item.buy_order.price}) - Bid Value (${item.bid_value})` , "warning");
         if (percentage < config.bid.discount) {
             Message.debug(`Bad price - Discount(${percentage}) - Config(${config.bid.discount})` , "blue");
@@ -48,7 +48,7 @@ module.exports = class Price {
     getNextBidValue(price)
     {
         let amount = price/100;
-        return price + amount;
+        return Math.round(price + amount);
     }
 
     async getPrice(item) {

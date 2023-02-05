@@ -1,6 +1,5 @@
 const fs = require('fs');
 const axios = require('axios');
-const constants = require("../constants.json");
 const Message = require("../Model/Message.js");
 
 module.exports = class Steam {

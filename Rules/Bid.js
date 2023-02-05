@@ -73,11 +73,11 @@ module.exports = {
         Message.print(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");
         if (config.bid.enabled) {
             Message.print("Placing bid", "warning");
-            let request = await axios.post(url, {bid_value: item.bid_value}).catch((err) => {
+            await axios.post(url, {bid_value: item.bid_value}).catch((err) => {
                 if (err.hasOwnProperty("response") && err.response.hasOwnProperty("data") && err.response.data.hasOwnProperty("message")) {
                     Message.print(err.response.data.message, "error")
                 } else {
-                    Message.debug(err, "exeption");
+                    Message.debug(err, "exception");
                 }
                 return null;
             });

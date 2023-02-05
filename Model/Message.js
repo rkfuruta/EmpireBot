@@ -1,6 +1,7 @@
 const config = require("../config.json");
 const colors = require("colors");
 const _ = require("underscore");
+const moment = require("moment");
 
 module.exports = {
     print: (message, type, identifier = null) => {
@@ -8,6 +9,8 @@ module.exports = {
             return false;
         }
         if (!_.isObject(message)) {
+            const now = moment();
+            message = `[${now.format('YYYY-MM-DD HH:mm:ss')}] - ${message}`;
             switch (type) {
                 case "exeption":
                     message = message.underline.red;

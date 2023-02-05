@@ -10,7 +10,14 @@ module.exports = class Waxpeer {
         if(!item) {
             return null;
         }
-        return await this.getBuyOrder(item);
+        const price = await this.getBuyOrder(item);
+        if (!price) {
+            return null;
+        }
+        return {
+            "price" : price,
+            "from": "Waxpeer"
+        };
     }
 
     async getBuyOrder(item) {

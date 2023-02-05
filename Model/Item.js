@@ -15,6 +15,10 @@ module.exports = class Item {
         this.value = this.getValue();
         this.price = this.getPrice();
         this.is_commodity = item.is_commodity;
+        this.buy_order = {
+            "price": null,
+            "from": null
+        }
     }
 
     hasGoodFloat() {

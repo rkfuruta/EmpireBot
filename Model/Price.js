@@ -1,17 +1,20 @@
 const Steam = require("../Price/Steam");
 const Waxpeer = require("../Price/Waxpeer");
+const MarketCSGO = require("../Price/MarketCSGO");
 const Message = require("../Model/Message.js");
 const config = require("../config.json");
+const _ = require("underscore");
 
 
 module.exports = class Price {
     constructor() {
         this.steam = new Steam();
         this.waxpeer = new Waxpeer();
+        this.marketcsgo = new MarketCSGO();
     }
     async hasGoodPrice(item) {
         let price = await this.getPrice(item);
-        Message.debug(`Item ${item.name} price: ${item.price} Buy order: ${price}` , "blue");
+        Message.debug(`Item ${item.name} Coin: ${item.price} Price: ${item.getFormattedPrice()} Buy order: ${price} Buy from: ${item.buy_order.from}` , "blue");
         if (!price) {
             return false;
         }
@@ -45,22 +48,24 @@ module.exports = class Price {
         return true;
     }
 
-    getNextBidValue(price)
-    {
+    getNextBidValue(price) {
         let amount = price/100;
         return Math.round(price + amount);
     }
 
     async getPrice(item) {
-        let price = await this.waxpeer.getPrice(item);
-        item.buy_order = {
-            "price" : price,
-            "from": "waxpeer"
-        };
-        // if (!price) {
-        //     Message.debug(`Item price from steam: ${price}`, "blue");
-        //     price = await this.steam.getPrice(item);
-        // }
-        return price;
+        let price = null;
+        let priority = [...config.price.priority];
+        while(!price && priority.length) {
+            let type = priority.shift().toLowerCase();
+            if (this.hasOwnProperty(type)) {
+                price = await this[type].getPrice(item);
+            }
+        }
+        if (!price) {
+            return null;
+        }
+        item.buy_order = price;
+        return price.price;
     }
 }

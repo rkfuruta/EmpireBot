@@ -5,13 +5,14 @@ const price = new Price();
 
 module.exports = class AuctionUpdate {
     async update(userData, update, bidItems) {
-        if (userData.user.id === update.auction_highest_bidder) {
-            return null;
-        }
         if (!bidItems.hasOwnProperty(update.id)) {
             return null;
         }
         let item = bidItems[update.id];
+        if (userData.user.id === update.auction_highest_bidder) {
+            Message.debug(`Currently highest bidder on ${item.name} Price(${item.raw_value}) Bid(${item.bid_value})`, `warning`)
+            return null;
+        }
         let newBidValue = price.getNextBidValue(update.auction_highest_bid);
         Message.debug(`Checking update on auction ${item.name} Price(${item.raw_value}) Bid(${item.bid_value}) New Bid(${newBidValue})`, "warning");
         item.bid_value = newBidValue;

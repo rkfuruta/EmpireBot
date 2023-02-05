@@ -70,7 +70,7 @@ module.exports = {
         Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormattedPrice()}\n\tBid Value: ${item.bid_value}\n\tBid Price: ${item.getFormattedBidPrice()}`, "success");
         let url = `${constants.empire.endpoint}trading/deposit/${item.depositId}/bid`;
         Message.debug(url, "blue");
-        Message.print(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");
+        Message.debug(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");
         if (config.bid.enabled) {
             Message.print("Placing bid", "warning");
             await axios.post(url, {bid_value: item.bid_value}).catch((err) => {

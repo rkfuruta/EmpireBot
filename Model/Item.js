@@ -53,6 +53,10 @@ module.exports = class Item {
         return "$" + this.getPrice().toFixed(2);
     }
 
+    getFormattedBidPrice() {
+        return "$" + this.getBidPrice().toFixed(2);
+    }
+
     isOnBlackList() {
         if (blacklist.hasOwnProperty("market_name") && _.isArray(blacklist.market_name)) {
             let blacklisted = _.find(blacklist.market_name, (name) => {

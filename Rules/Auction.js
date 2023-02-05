@@ -8,7 +8,7 @@ module.exports = class AuctionUpdate {
         if (!bidItems.hasOwnProperty(update.id)) {
             return null;
         }
-        let item = bidItems[update.id];
+        let item = bidItems[update.id].item;
         if (userData.user.id === update.auction_highest_bidder) {
             Message.debug(`Currently highest bidder on ${item.name} Price(${item.raw_value}) Bid(${item.bid_value})`, `warning`)
             return null;

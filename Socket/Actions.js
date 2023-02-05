@@ -11,7 +11,20 @@ const _ = require("underscore");
 const Bid = require("../Rules/Bid.js");
 const Auction = require("../Rules/Auction.js");
 const Item = require("../Model/Item.js");
+const moment = require("moment/moment");
+const Message = require("../Model/Message");
 let bidItems = {};
+
+function clearOldBids() {
+    _.each(Object.keys(bidItems), (id) => {
+        const lifeTime = moment().subtract(30, 'minutes');
+        if (bidItems[id].time.isBefore(lifeTime)) {
+            const item = bidItems[id].item;
+            Message.debug(`Deleted item ${item.name} from bid list`, "warning");
+            delete bidItems[id];
+        }
+    });
+}
 
 module.exports = {
     new_item: (data) => {
@@ -19,7 +32,10 @@ module.exports = {
             let item_model = new Item(item);
             let result = await Bid.execute(item_model);
             if (result) {
-                bidItems[item_model.depositId] = item_model;
+                bidItems[item_model.depositId] = {
+                    "item": item_model,
+                    "time": moment()
+                }
             }
         });
     },
@@ -32,5 +48,6 @@ module.exports = {
                 delete bidItems[result];
             }
         });
+        clearOldBids();
     }
 }

@@ -57,6 +57,14 @@ module.exports = class Item {
         return "$" + this.getBidPrice().toFixed(2);
     }
 
+    getBidDiscountPercentage() {
+        return 100-((this.getBidPrice()*100)/this.buy_order.price);
+    }
+
+    getFormattedBidDiscountPercentage() {
+        return this.getBidDiscountPercentage().toFixed(2) + "%";
+    }
+
     isOnBlackList() {
         if (blacklist.hasOwnProperty("market_name") && _.isArray(blacklist.market_name)) {
             let blacklisted = _.find(blacklist.market_name, (name) => {

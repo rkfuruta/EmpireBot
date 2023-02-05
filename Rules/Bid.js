@@ -67,7 +67,7 @@ module.exports = {
     },
 
     place: async (item) => {
-        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormattedPrice()}\n\tBid Value: ${item.bid_value}\n\tBid Price: ${item.getFormattedBidPrice()}`, "success");
+        Message.print(`Place Bid on \n\tName: ${item.name}\n\tWear: ${item.wear}\n\tCoins: ${item.value}\n\tPrice: ${item.getFormattedPrice()}\n\tBid Value: ${item.bid_value}\n\tBid Price: ${item.getFormattedBidPrice()}\n\tBuy Order: ${item.buy_order.price}\n\tDiscounted: ${item.getBidDiscountPercentage()}%`, "success");
         let url = `${constants.empire.endpoint}trading/deposit/${item.depositId}/bid`;
         Message.debug(url, "blue");
         Message.debug(`Item: ${item.name} Url: ${url} Bid value: ${item.bid_value}`, "warning");
@@ -77,7 +77,7 @@ module.exports = {
                 if (err.hasOwnProperty("response") && err.response.hasOwnProperty("data") && err.response.data.hasOwnProperty("message")) {
                     Message.print(err.response.data.message, "error")
                 } else {
-                    Message.debug(err, "exception");
+                    Message.print(err, "exception");
                 }
                 return null;
             });

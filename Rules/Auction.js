@@ -1,7 +1,7 @@
 const Message = require("../Model/Message.js");
 const Price = require("../Model/Price.js");
 const Bid = require("../Rules/Bid.js");
-const price = new Price();
+const price = new Price(false);
 
 module.exports = class AuctionUpdate {
     async update(userData, update, bidItems) {

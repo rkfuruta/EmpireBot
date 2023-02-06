@@ -7,14 +7,16 @@ const _ = require("underscore");
 
 
 module.exports = class Price {
-    constructor() {
-        this.steam = new Steam();
-        this.waxpeer = new Waxpeer();
-        this.marketcsgo = new MarketCSGO();
+    constructor(instancePrices = true) {
+        if (instancePrices) {
+            this.steam = new Steam();
+            this.waxpeer = new Waxpeer();
+            this.marketcsgo = new MarketCSGO();
+        }
     }
     async hasGoodPrice(item) {
         let price = await this.getPrice(item);
-        Message.debug(`Item ${item.name} Coin: ${item.price} Price: ${item.getFormattedPrice()} Buy order: ${price} Buy from: ${item.buy_order.from}` , "blue");
+        Message.debug(`Item ${item.name} Coin: ${item.value} Price: ${item.getFormattedPrice()} Buy order: ${price} Buy from: ${item.buy_order.from}` , "blue");
         if (!price) {
             return false;
         }

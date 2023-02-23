@@ -1,14 +1,11 @@
 const axios = require('axios');
 const Message = require("../Model/Message");
-const moment = require("moment");
-const config = require("../config.json");
 const _ = require("underscore");
-let itemList = {};
+const moment = require("moment/moment");
+const config = require("../config.json");
+const itemList = {};
 
 module.exports = class MarketCSGO {
-    constructor() {
-        this.getItemList();
-    }
     async getPrice(item) {
         if (!item) {
             return null;
@@ -24,49 +21,48 @@ module.exports = class MarketCSGO {
     }
 
     async getBuyOrder(item) {
-        if (!Object.keys(itemList).length) {
-            await this.getItemList();
+        if (itemList.hasOwnProperty(item.name)) {
+            let cache = moment().subtract(config.marketcsgo.cacheList, 'minutes');
+            if (itemList[item.name].time.isBefore(cache)) {
+                Message.debug(`Item list refresh from ${item.name} - ${config.marketcsgo.cacheList} minutes`, "blue");
+                delete itemList[item.name];
+                return this.getBuyOrder(item);
+            }
+            Message.debug(`Item price from cache ${item.name}`, "blue");
+            return itemList[item.name].price;
         }
-        let cache = moment().subtract(config.marketcsgo.cacheList, 'minutes');
-        if (itemList.time.isBefore(cache)) {
-            Message.debug(`Refreshing itemList from MarketCSGO - ${config.marketcsgo.cacheList} minutes`, "blue");
-            await this.getItemList();
-        }
-        if (itemList.items.hasOwnProperty(item.name)) {
-            return itemList.items[item.name].price;
-        }
-        return null;
-    }
-
-    async getItemList() {
-        Message.debug(`Sending request to get itemList from MarketCSGO`, "blue");
-        itemList = {};
-        let url = `https://market.csgo.com/api/v2/prices/class_instance/USD.json`;
-        let request = await axios.get(url).catch((err) => {
+        const url = `https://market.csgo.com/api/graphql`;
+        let response = await axios.post(url, {
+            "operationName": "orders",
+            "variables": {
+                "market_hash_name": item.name,
+                "phase": ""
+            },
+            "query": "query orders($market_hash_name: String!, $phase: String!) {\n  orders(market_hash_name: $market_hash_name, phase: $phase) {\n    price\n    total\n    __typename\n  }\n}"
+        }).catch((err) => {
             Message.debug(err, "exeption");
         });
-        itemList = {
-            "time": moment(),
-            "items": {}
+        if (response.data.data.orders) {
+            _.each(response.data.data.orders, (order) => {
+                if (!itemList.hasOwnProperty(item.name)) {
+                    order.time = moment();
+                    itemList[item.name] = order;
+                } else if (itemList[item.name].price < order.price) {
+                    order.time = moment();
+                    itemList[item.name] = order;
+                }
+            });
+        } else if (response.data.data.orders === null) {
+            itemList[item.name]= {
+                "time": moment(),
+                "price": null
+            };
         }
-        _.each(request.data.items, (item) => {
-            if (itemList["items"].hasOwnProperty(item.market_hash_name)) {
-                if (item.buy_order < itemList["items"][item.market_hash_name].price) {
-                    itemList["items"][item.market_hash_name] = {
-                        "price": item.buy_order,
-                        "avg_price": item.avg_price,
-                        "popularity": item.popularity_7d
-                    }
-
-                }
-            } else {
-                itemList["items"][item.market_hash_name] = {
-                    "price": item.buy_order,
-                    "avg_price": item.avg_price,
-                    "popularity": item.popularity_7d
-                }
-            }
-        });
-        Message.debug(`itemList from MarketCSGO generated`, "blue");
+        try {
+            return itemList[item.name].price;
+        } catch (e) {
+            console.log(response.data);
+            console.log(item.name)
+        }
     }
 }

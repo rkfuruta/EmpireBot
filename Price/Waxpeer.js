@@ -43,7 +43,7 @@ module.exports = class Waxpeer {
         let bestOrder = list.shift();
         let secondOrder = list.shift();
         let best = parseInt(bestOrder.price);
-        if (secondOrder !== undefined) {
+        if (config.waxpeer.check_buy_orders && secondOrder !== undefined) {
             let best = parseInt(bestOrder.price);
             let second = parseInt(secondOrder.price);
             let percentage = 100-((second*100)/best);

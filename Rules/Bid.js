@@ -78,8 +78,8 @@ module.exports = {
                     Message.print(err.response.data.message, "error")
                 } else {
                     Message.print(err, "exception");
+                    return null;
                 }
-                return null;
             });
             return item;
         }

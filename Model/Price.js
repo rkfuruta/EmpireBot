@@ -24,7 +24,7 @@ module.exports = class Price {
             return false;
         }
         let percentage = 100-((item.price*100)/price);
-        Message.debug(`Discounted ${percentage}% - Item(${item.name}) - Price(${item.price}) - Buy Order(${price})` , "warning");
+        Message.print(`Discounted ${percentage}% - Item(${item.name}) - Price(${item.price}) - Buy Order(${price})` , "warning");
         if (percentage < config.bid.discount) {
             Message.debug(`Bad price - Discount(${percentage}) - Config(${config.bid.discount})` , "blue");
             return false;
@@ -38,11 +38,11 @@ module.exports = class Price {
             return false;
         }
         if (item.buy_order.price < item.getBidPrice()) {
-            Message.debug(`Auction item ${item.name} bid value (${item.bid_value}) bid price (${item.getBidPrice()}) higher than buy order (${item.buy_order.price})`)
+            Message.print(`Auction item ${item.name} bid value (${item.bid_value}) bid price (${item.getBidPrice()}) higher than buy order (${item.buy_order.price})`)
             return false;
         }
-        let percentage = 100-((item.price*100)/item.getBidPrice());
-        Message.debug(`Discounted ${percentage}% - Item(${item.name}) - Price(${item.price}) - Buy Order(${item.buy_order.price}) - Bid Value (${item.bid_value})` , "warning");
+        let percentage = 100-((item.getBidPrice()*100)/item.buy_order.price);
+        Message.print(`Discounted ${percentage}% - Item(${item.name}) - Price(${item.price}) - Buy Order(${item.buy_order.price}) - Bid Price (${item.getBidPrice()}) - Bid Value (${item.bid_value})` , "warning");
         if (percentage < config.bid.discount) {
             Message.debug(`Bad price - Discount(${percentage}) - Config(${config.bid.discount})` , "blue");
             return false;

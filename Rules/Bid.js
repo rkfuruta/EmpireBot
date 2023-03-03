@@ -43,6 +43,10 @@ module.exports = {
             Message.debug(`${item.name} removed: Knife or Glove`, "error", "bad_item");
             return false;
         }
+        if (!config.bid.buy_souvenir && item.isSouvenir()) {
+            Message.debug(`${item.name} removed: Souvenir`, "error", "bad_item");
+            return false;
+        }
         if (!(await price.hasGoodPrice(item))) {
             Message.debug(`${item.name} removed: Bad Price`, "error", "bad_item");
             return false;

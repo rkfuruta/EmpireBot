@@ -37,6 +37,10 @@ module.exports = class Item {
         return (this.name.indexOf('★') !== -1);
     }
 
+    isSouvenir() {
+        return (this.name.indexOf('Souvenir') !== -1);
+    }
+
     getValue() {
         return this.raw_value/100;
     }
